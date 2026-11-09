@@ -1,6 +1,7 @@
 <?php
 
 
+/** Affiche le titre et la vidéo d'arrière-plan dans le corps de page. */
 class Header {
     public function afficher() {
         echo '<body>';

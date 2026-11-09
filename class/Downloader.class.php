@@ -73,8 +73,8 @@ class Downloader {
         print_r($output);
         echo "</pre>";
 
-        exec("id; echo PATH=\$PATH; command -v deno; command -v node", $output);
-        var_dump($output);
+        //exec("id; echo PATH=\$PATH; command -v deno; command -v node", $output);
+        //var_dump($output);
 
         if ($code !== 0) {
             return false;
@@ -86,13 +86,13 @@ class Downloader {
             $ligne = trim($ligne);
 
             // Informations de diagnostic sur chaque ligne candidate.
-            var_dump([
-                'ligne' => $ligne,
-                'is_file' => is_file($ligne),
-                'file_exists' => file_exists($ligne),
-                'dossier' => $this->dossier,
-                'is_writable' => is_writable($this->dossier)
-            ]);
+            //var_dump([
+            //    'ligne' => $ligne,
+            //    'is_file' => is_file($ligne),
+            //    'file_exists' => file_exists($ligne),
+            //    'dossier' => $this->dossier,
+            //    'is_writable' => is_writable($this->dossier)
+            //]);
 
             if (is_file($ligne)) {
                 return $ligne;

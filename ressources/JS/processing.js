@@ -1,10 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    //fonctionnera quand j'aurai fini la partie recherche et que je pourrai récupérer le formulaire et le bouton de lancement
     const bouton = document.getElementById('bouton-lancer');
     const formulaire = bouton.closest('form');
     const urlForm = document.getElementById('url-input');
     const zoneLancement = document.getElementById('zone-lancement');
 
+    // Contrôle navigateur complémentaire à la validation PHP dans Downloader.
     const domainesAutorises = [
         'youtube.com',
         'www.youtube.com',
@@ -34,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Affichage du spinner
+        // Affiche une surcouche pendant que le serveur exécute yt-dlp.
         zoneLancement.innerHTML = `
             <main class="ecran-lancement">
                 <div class="lancement-contenu">
@@ -69,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ? correspondance[1]
                 : 'telechargement';
 
-            // Création du lien de téléchargement
+            // Déclenche le téléchargement du Blob reçu sans naviguer vers une page audio.
             const lien = document.createElement('a');
             const urlFichier = URL.createObjectURL(fichier);
 
@@ -86,6 +88,13 @@ document.addEventListener('DOMContentLoaded', () => {
             zoneLancement.innerHTML = `
                 <p>Téléchargement terminé !</p>
             `;
+
+            console.log("Téléchargement terminé, attente du rafraîchissement...");
+
+            setTimeout(() => {
+                console.log("Rafraîchissement en cours !");
+                window.location.assign(window.location.href);
+            }, 2000);
 
         } catch (erreur) {
 

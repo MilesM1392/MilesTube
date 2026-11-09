@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+!.env.sample
+trash.tkt
+/storage/downloads/*
+!/storage/downloads/.gitkeep
+/.codex
+
+# Fichiers temporaires et journaux locaux
+*.log
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -2,6 +2,7 @@
 
 
 
+/** Fournit le conteneur rempli par processing.js pendant un téléchargement. */
 class Spinner {
     public function afficher() {
         echo '<div id="zone-lancement">';

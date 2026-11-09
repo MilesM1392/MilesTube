@@ -12,8 +12,10 @@ else
 
 function set_autoload()
 {
+    // L'autoloader cherche la classe demandée dans les dossiers du projet.
     function my_autoloader($classname) 
     {
+        // L'ordre définit les dossiers parcourus lors de la résolution d'une classe.
         $folders = [
             './class/',
             './class/views/',

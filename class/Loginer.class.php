@@ -1,5 +1,6 @@
 <?php
 
+/** Gère l'authentification et la création des comptes utilisateur. */
 class Loginer{
 
     Public $dba;
@@ -9,6 +10,7 @@ class Loginer{
     }
 
     function Login($username, $password) {
+        // Requête préparée : le nom d'utilisateur reste un paramètre SQL.
         $stmt = $this->dba->prepare("SELECT * FROM utilisateur WHERE nom_utilisateur = ?");
         $stmt->execute([trim($username)]);
 
@@ -30,6 +32,7 @@ class Loginer{
 
     function Regist($email, $username, $password) {
 
+        // Ne jamais stocker le mot de passe en clair.
         $hash_pass = password_hash($password, PASSWORD_DEFAULT);
 
         try {

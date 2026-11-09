@@ -1,6 +1,7 @@
 <?php
 
 
+/** Génère l'ouverture du document HTML et les ressources communes. */
 class Head {
     public function afficher() {
         echo '<!DOCTYPE html>';

@@ -1,3 +1,4 @@
+/* Contenu au-dessus des éléments de fond. */
 .content {
             position: relative;
             z-index: 1;
@@ -13,6 +14,7 @@
         }
 
 
+        /* La vidéo couvre la fenêtre et reste derrière le contenu. */
         #background-video {
             position: fixed;
             top: 0;
@@ -26,6 +28,7 @@
 
             filter: brightness(0.5);
         }
+        /* Présentation commune des formulaires. */
         form {
             background-color: rgba(255, 255, 255, 0.4);
             padding: 20px;
@@ -56,6 +59,7 @@
             background-color: #0056b3;
         }
 
+        /* Lecteur Spotify fixé dans le coin inférieur droit. */
         iframe {
             margin-top: 20px;
 
@@ -74,7 +78,7 @@
 
 
 
-        /* Styles for the loading screen */ 
+        /* Écran de progression affiché pendant un téléchargement. */
 
         /* Fond sombre qui recouvre toute la page */
         .ecran-lancement {
@@ -144,3 +148,41 @@
             margin: 25px 0 18px;
             color: var(--couleur-texte-secondaire);
         }
+
+        /* Grille des résultats et cartes vidéo créées par research.js. */
+        #resultats-recherche {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+            }
+
+            .video-card {
+                overflow: hidden;
+                border-radius: 12px;
+                background: #181818;
+                padding: 12px;
+            }
+
+            .video-card img {
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+            .video-card h3 {
+                font-size: 1rem;
+                margin: 10px 0 5px;
+            }
+
+            .video-card p {
+                color: #aaa;
+                font-size: 0.85rem;
+            }
+
+            .video-card button {
+                width: 100%;
+                padding: 10px;
+                cursor: pointer;
+            }
