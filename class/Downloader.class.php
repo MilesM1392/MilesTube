@@ -10,9 +10,14 @@ class Downloader {
     private string $dossier;
 
     public function __construct() {
-        // __DIR__ désigne le répertoire class/ ; on remonte donc d'un niveau
-        // avant de rejoindre storage/downloads/.
+
         $this->dossier = __DIR__ . '/../storage/downloads/';
+
+        if (!is_dir($this->dossier) || !is_writable($this->dossier)) {
+            throw new RuntimeException(
+                "Le dossier de téléchargement est inaccessible."
+            );
+        }
     }
 
     /** Télécharge le lien fourni et demande une conversion en MP3. */
@@ -43,7 +48,7 @@ class Downloader {
             return false;
         }
 
-        $commande = "/usr/local/bin/yt-dlp";
+        $commande = "/usr/bin/timeout --kill-after=10s 600s /usr/local/bin/yt-dlp";
 
         // Choisir les options de yt-dlp selon le format demandé.
         if ($audio) {
@@ -59,7 +64,9 @@ class Downloader {
 
         // Le modèle de nommage utilise le titre de la vidéo. yt-dlp affiche
         // ensuite le chemin final, que l'on pourra retrouver dans sa sortie.
-        $commande .= " -o " . escapeshellarg($this->dossier . "%(title)s.%(ext)s");
+        // Le nom de fichier est unique grâce à un identifiant aléatoire.
+        $idTelechargement = bin2hex(random_bytes(2)); // 4 caractères hexadécimaux pour identifier le téléchargement
+        $commande .= " -o " . escapeshellarg($this->dossier . "%(title)s [%(id)s]".$idTelechargement."." . ($audio ? "mp3" : "mp4"));
         $commande .= " --print after_move:filepath";
         $commande .= " " . escapeshellarg($link);
 
@@ -76,30 +83,35 @@ class Downloader {
         //exec("id; echo PATH=\$PATH; command -v deno; command -v node", $output);
         //var_dump($output);
 
+        // Vérifier le code retour de yt-dlp.
+        exec($commande . " 2>&1", $output, $code);
+
         if ($code !== 0) {
+            if ($code === 124 || $code === 137) {
+                error_log("[MileTube] Téléchargement interrompu : délai maximal dépassé.");
+            } else {
+                error_log(
+                    "[MileTube] Échec yt-dlp (code {$code}) :\n" .
+                    implode("\n", $output)
+                );
+            }
+
             return false;
         }
 
-        // Le chemin du fichier final est généralement la dernière ligne utile.
-        // On parcourt donc la sortie à l'envers et renvoie le premier fichier trouvé.
+        // Retrouver le fichier généré.
         foreach (array_reverse($output) as $ligne) {
+
             $ligne = trim($ligne);
 
-            // Informations de diagnostic sur chaque ligne candidate.
-            //var_dump([
-            //    'ligne' => $ligne,
-            //    'is_file' => is_file($ligne),
-            //    'file_exists' => file_exists($ligne),
-            //    'dossier' => $this->dossier,
-            //    'is_writable' => is_writable($this->dossier)
-            //]);
-
-            if (is_file($ligne)) {
+            if (is_file($ligne) && filesize($ligne) > 0 && is_readable($ligne)) {
                 return $ligne;
             }
         }
 
+        // Aucun fichier valide trouvé.
+        error_log("Fichier généré introuvable ou invalide : " . implode("\n", $output));
+
         return false;
-                
     }
 }

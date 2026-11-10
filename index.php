@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['query'])) {
     header('Content-Type: application/json; charset=utf-8');
 
     try {
-
         // Instancier le service de recherche YouTube.
         $youtube = new YoutubeService();
 
